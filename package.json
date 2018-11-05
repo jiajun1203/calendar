@@ -1,5 +1,5 @@
 {
-  "name": "Calendar",
+  "name": "mrczz-calendar",
   "version": "0.0.1",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -9,11 +9,16 @@
     "Calendar",
     "日历"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jiajun1203/calendar.git"
+  },
   "dependencies": {
     "prop-types": "^15.6.2",
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.4"
   },
+  "homepage": "https://github.com/jiajun1203/calendar.git",
   "devDependencies": {
     "babel-jest": "23.6.0",
     "jest": "23.6.0",
