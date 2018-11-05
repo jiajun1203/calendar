@@ -10,36 +10,32 @@
 
   DEMO:cd到Demo目录下，执行npm install 完成后，直接运行项目 
 
-    MonthList style = {{marginHorizontal:25,marginTop:64}}
-                               width = {maxWidth - 50}
-                               height = {270}
-                               isSelectMore = {false}           //是否允许多选
-                               isShowNotCurrentMonth = {true}   //是否展示当月天
-                               isSelectGray = {false}           //是否可以点击非当月天
-                               horizontal = {true}              //暂时只能横向滑动
-                               getShowTime = {(year,month) =>{
-                                  //返回当前年月
-                               }}
-                                getMarks={(month) =>{
-                                //每次加载新界面，获取对应标签，数组中传几号
-                                    return [3,6,9];
-                                }}
-                                getSelectDays={(month) =>{
-                                //每次加载新界面（重复加载<加载第二次>不获取），获取对应选择天，数组中传几号
-                                    return [13,16,19];
-                                }}
-                                selectDaysBack={(days) =>{
-                                //返回用户当前选择天
-                                    // console.log(days);
-                                }}/>
-                                
+    <MonthList style = {{marginHorizontal:25,marginTop:64}}
+                        width = {maxWidth - 50}
+                        height = {270}
+                        isSelectMore = {false}           //是否允许多选
+                        isShowNotCurrentMonth = {true}   //是否展示当月天
+                        isSelectGray = {false}           //是否可以点击非当月天
+                        horizontal = {true}              //暂时只能横向滑动
+                        getShowTime = {(year,month) =>{//返回当前年月}}
+                        getMarks={(month) =>{//每次加载新界面，获取对应标签，数组中传几号
+                        return [3,6,9];
+                        }}
+                        getSelectDays={(month) =>{//每次加载新界面（重复加载<加载第二次>不获取），获取对应选择天，数组中传几号
+                        return [13,16,19];
+                        }}
+                        selectDaysBack={(days) =>{//返回用户当前选择天}}/>
+                        
+                        
+                        
+                        
+                        
                                 ## 可设置属性   ##
-                                
                                 horizontal: PropTypes.bool, //暂时只能横屏
                                 year : PropTypes.number,    //默认当前年
                                 month: PropTypes.number,    //默认当前月 和 日
                                 
-                                marks : PropTypes.array,    //日期标签（右上角小红点）样式[{year:[month:[day]]}]
+                                marks : PropTypes.array,    //日期标签（右上角小红点)
                                 
                                 isShowNotCurrentMonth : PropTypes.bool, //是否展示非本月日期
                                 isSelectGray : PropTypes.bool,          //是否可选择非本月日期
