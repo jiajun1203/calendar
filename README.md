@@ -6,6 +6,8 @@
 
   使用：npm i mrczz-calendar --save
 
+  DEMO:cd到Demo目录下，执行npm install 完成后，直接运行项目 
+
  ![Alt text](https://github.com/jiajun1203/calendar/raw/master/assets/image/month.jpg)
 
   ![Alt text](https://github.com/jiajun1203/calendar/raw/master/assets/image/monthSelect.jpg)
