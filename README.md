@@ -4,6 +4,8 @@
   
   下次更新按年展示，支持上下滑动展示。
 
+  使用：npm i mrczz-calendar --save
+
  ![Alt text](https://github.com/jiajun1203/calendar/raw/master/assets/image/month.jpg)
 
   ![Alt text](https://github.com/jiajun1203/calendar/raw/master/assets/image/monthSelect.jpg)
