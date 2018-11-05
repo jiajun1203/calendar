@@ -4,8 +4,8 @@
   
   下次更新按年展示，支持上下滑动展示。
 
-  /Users/goboo/Desktop/IMG_0334.jpg 
+ https://github.com/jiajun1203/calendar/raw/master/assets/image/month.jpg
 
-  /Users/goboo/Desktop/IMG_0332.jpg 
+  https://github.com/jiajun1203/calendar/raw/master/assets/image/monthSelect.jpg
 
 
