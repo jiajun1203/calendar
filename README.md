@@ -54,6 +54,8 @@
                                 
 
 
+ ![Alt text](https://github.com/jiajun1203/calendar/raw/master/assets/image/calGif.mp4)
+
  ![Alt text](https://github.com/jiajun1203/calendar/raw/master/assets/image/month.jpg)
 
   ![Alt text](https://github.com/jiajun1203/calendar/raw/master/assets/image/monthSelect.jpg)
