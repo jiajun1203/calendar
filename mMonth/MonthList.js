@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {
-    View,Text, ScrollView,
+    View,Text, ScrollView,Dimensions,
 } from 'react-native'
 import PropTypes from 'prop-types'
 import Month from './Month'
@@ -8,6 +8,7 @@ import Month from './Month'
 const topWeekHeight = 30;
 const date = new Date();
 const weekArray = ['日','一','二','三','四','五','六'];
+
 
 export default class MonthList extends Component{
     static propTypes = {
@@ -158,15 +159,15 @@ export default class MonthList extends Component{
         }
 
         let data = {    year:year,
-                        month:month,
-                        isSelectMore:this.props.isSelectMore,
-                        isGray:true,
-                        isSelectGray:this.props.isSelectGray,
-                        isShowNotCurrentMonth : this.props.isShowNotCurrentMonth,
-                        markColor:this.props.markColor,
-                        selectColor : this.props.selectColor,
-                        selectShape : this.props.selectShape,
-                        selectSpace : this.props.selectSpace,};
+            month:month,
+            isSelectMore:this.props.isSelectMore,
+            isGray:true,
+            isSelectGray:this.props.isSelectGray,
+            isShowNotCurrentMonth : this.props.isShowNotCurrentMonth,
+            markColor:this.props.markColor,
+            selectColor : this.props.selectColor,
+            selectShape : this.props.selectShape,
+            selectSpace : this.props.selectSpace,};
 
         if (findYearIndex === -1){
             yearData = {year:year,month:[{time:month,data:data}]};
@@ -223,28 +224,53 @@ export default class MonthList extends Component{
         return item;
     };
 
+    gotoContentCenter = (animation = false) =>{
+        if (this.swiperView){
+            this.swiperView.scrollTo({x:this.props.horizontal ? this.props.width : 0,y:!this.props.horizontal ? this.props.height : 0,animated:animation});
+        }
+    };
+
     onScrollEndDrag = (e) =>{
         let nativeEvent = e.nativeEvent;
         let dataArr = [];
         let data;
-        if (nativeEvent.contentOffset.x > nativeEvent.layoutMeasurement.width){
+
+        let isSwiper = this.props.horizontal ? nativeEvent.contentOffset.x > nativeEvent.layoutMeasurement.width :
+            nativeEvent.contentOffset.y > nativeEvent.layoutMeasurement.height;
+
+        let isHorizontalSwiper = Math.abs(nativeEvent.contentOffset.x - nativeEvent.layoutMeasurement.width) > nativeEvent.layoutMeasurement.width * 0.2;
+        let isVerticalSwiper = Math.abs(nativeEvent.contentOffset.y - nativeEvent.layoutMeasurement.height) > nativeEvent.layoutMeasurement.height * 0.2;
+
+        let isLoad = this.props.horizontal ? isHorizontalSwiper : isVerticalSwiper;
+
+        if (isSwiper){
             //下个月
-            data = this.state.data[2];
-            let time = this.getCorrespondingTime(true,data.year,data.month);
-            dataArr = [ this.setMarkValue(this.state.data[1]),
-                this.setMarkValue(data),
-                this.setMarkValue(this.getDetailWith(time.year,time.month))];
+            if (isLoad){
+                data = this.state.data[2];
+                let time = this.getCorrespondingTime(true,data.year,data.month);
+                dataArr = [ this.setMarkValue(this.state.data[1]),
+                    this.setMarkValue(data),
+                    this.setMarkValue(this.getDetailWith(time.year,time.month))];
+            } else{
+                this.gotoContentCenter(true);
+                return
+            }
         }else {
             //上个月
-            data = this.state.data[0];
-            let time = this.getCorrespondingTime(false,data.year,data.month);
-            dataArr = [ this.setMarkValue(this.getDetailWith(time.year,time.month)),
-                this.setMarkValue(data),
-                this.setMarkValue(this.state.data[1])];
+            if (isLoad){
+                data = this.state.data[0];
+                let time = this.getCorrespondingTime(false,data.year,data.month);
+                dataArr = [ this.setMarkValue(this.getDetailWith(time.year,time.month)),
+                    this.setMarkValue(data),
+                    this.setMarkValue(this.state.data[1])];
+            }else{
+                this.gotoContentCenter(true);
+                return
+            }
         }
 
         if (dataArr.findIndex(item => item === undefined) !== -1){
-            this.swiperView.scrollTo({x:this.props.width,y:0,animated:false});
+            this.gotoContentCenter();
             return;
         }
 
@@ -255,54 +281,7 @@ export default class MonthList extends Component{
         this.state.data = dataArr;
         this.state.offSet = {x:0,y:0};
 
-        this.swiperView.scrollTo({x:this.props.width,y:0,animated:false});
-
-        if (this.leftMonth && this.leftMonth.refreshDay){
-            this.leftMonth.refreshDay(dataArr[0]);
-        }
-        if (this.centerMonth && this.centerMonth.refreshDay){
-            this.centerMonth.refreshDay(dataArr[1]);
-        }
-        if (this.rightMonth && this.rightMonth.refreshDay){
-            this.rightMonth.refreshDay(dataArr[2]);
-        }
-
-    };
-
-    onMomentumScrollEnd = (e) =>{
-        let newIndex = e.nativeEvent.contentOffset.x/this.props.width;
-        if (newIndex === this.state.oldIndex)return;
-        let dataArr = [];
-        let data;
-        if (this.state.oldIndex < newIndex){
-            //下一月
-            data = this.state.data[2];
-            let time = this.getCorrespondingTime(true,data.year,data.month);
-            dataArr = [ this.setMarkValue(this.state.data[1]),
-                        this.setMarkValue(data),
-                        this.setMarkValue(this.getDetailWith(time.year,time.month))];
-        }else {
-            // 上个月
-            data = this.state.data[0];
-            let time = this.getCorrespondingTime(false,data.year,data.month);
-            dataArr = [ this.setMarkValue(this.getDetailWith(time.year,time.month)),
-                        this.setMarkValue(data),
-                        this.setMarkValue(this.state.data[1])];
-        }
-
-        if (dataArr.findIndex(item => item === undefined) !== -1){
-            this.swiperView.scrollTo({x:this.props.width,y:0,animated:false});
-            return;
-        }
-
-        if (this.props.getShowTime){
-            this.props.getShowTime(dataArr[1].year,dataArr[1].month);
-        }
-
-        this.state.data = dataArr;
-        this.state.offSet = {x:0,y:0};
-
-        this.swiperView.scrollTo({x:this.props.width,y:0,animated:false});
+        this.gotoContentCenter();
 
         if (this.leftMonth && this.leftMonth.refreshDay){
             this.leftMonth.refreshDay(dataArr[0]);
@@ -375,7 +354,7 @@ export default class MonthList extends Component{
                                     let monthFindIndex = year.months.findIndex(item => item.month === selectItem.month);
                                     if (monthFindIndex > -1){
                                         let days = year.months[monthFindIndex].days;
-                                        let dayFindIndex = days.findIndex(item => item.day === selectItem.day.day);
+                                        let dayFindIndex = days.findIndex(item => item === selectItem.day.day);
                                         if (dayFindIndex === -1){
                                             days.push(selectItem.day.day);
                                         }else {
@@ -388,12 +367,9 @@ export default class MonthList extends Component{
                                     this.state.selectArray.push({year:selectItem.year,months:[{month:selectItem.month,days:[selectItem.day.day]}]});
                                 }
 
-                                console.log(this.state.selectArray);
-
                                 if (this.props.selectDaysBack){
                                     this.props.selectDaysBack(this.state.selectArray);
                                 }
-                                // this.state.selectArray.push(days);
                             }}/>
                 </View>
             )
@@ -431,11 +407,15 @@ export default class MonthList extends Component{
                 <ScrollView style = {{flex:1}}
                             ref = {ref => {this.swiperView = ref}}
                             onScrollEndDrag = {this.onScrollEndDrag}
-                            horizontal = {true}
-                            // onMomentumScrollEnd = {this.onMomentumScrollEnd}
+                            horizontal = {this.props.horizontal}
+                            scrollsToTop = {false}
+                            alwaysBounceVertical = {false}
+                            iosautomaticallyAdjustContentInsets = {false}
+                            scrollEventThrottle = {16}
                             onScrollBeginDrag = {this.onScrollBeginDrag}
-                            pagingEnabled = {true}
-                            contentOffset = {{x:this.props.width,y:0}}
+                            overScrollMode = {'never'}
+                            bounces = {false}
+                            contentOffset = {{x:this.props.horizontal ? this.props.width : 0,y:!this.props.horizontal ? this.props.height : 0}}
                             showsVerticalScrollIndicator = {false}
                             showsHorizontalScrollIndicator = {false}>
                     { this.state.viewArray }

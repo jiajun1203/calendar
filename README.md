@@ -1,10 +1,10 @@
 # calendar
 # react-native calendar
-  支持单/多选，农历展示，添加标记，首次加载自动添加选择项，左右滑动查看上下月。
+  支持单/多选，农历展示，添加标记，首次加载自动添加选择项，左右上下滑动查看上下月。
  
   选择框大小，样式均可修改。
  
-  下次更新按年展示，支持上下滑动展示。
+  下次更新按年展示，
 
   使用：npm i mrczz-calendar --save
 
@@ -16,7 +16,7 @@
                     isSelectMore = {false}           //是否允许多选
                     isShowNotCurrentMonth = {true}   //是否展示当月天
                     isSelectGray = {false}           //是否可以点击非当月天
-                    horizontal = {true}              //暂时只能横向滑动
+                    horizontal = {true}              //是否横向滑动
                     getShowTime = {(year,month) =>{//返回当前年月
                     }}
                     getMarks={(month) =>{
