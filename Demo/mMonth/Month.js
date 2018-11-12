@@ -43,10 +43,14 @@ export default class Month extends Component{
     static propTypes = {
         horizontal:PropTypes.bool,      //是否横向展示
 
+        isShowLunar : PropTypes.bool,   //是否展示农历
+
         describe : PropTypes.string,    //关于当月的描述
 
         marks:PropTypes.array,          //标记数组（默认打标记-右上角圆点）
         markColor:PropTypes.string,     //标记颜色
+
+        isShowNotCurrentMonth : PropTypes.bool,
 
         isSelectMore:PropTypes.bool,    //是否多选
         selectColor:PropTypes.string,   //选中颜色
@@ -61,7 +65,7 @@ export default class Month extends Component{
     };
     static defaultProps = {
         horizontal : false,
-
+        isShowLunar : true,
         describe : '',
 
         marks:[],
@@ -70,6 +74,7 @@ export default class Month extends Component{
         selectColor : '#1296db',
         selectShape: 'round',
         selectSpace: 0,
+        isShowNotCurrentMonth : false,
         selectDaysWithMonth: {},
     };
 
@@ -81,31 +86,30 @@ export default class Month extends Component{
             systemDay   : 0,
             selectArray : [],
             month : props.month,
-            year : props.month,
-            isBack : props.month.isBack,
+            year : props.year,
         }
     }
+
     componentWillMount(){
-        this.loadMonthData(this.state.month.year,this.state.month.month,true);
+        this.loadMonthData(this.state.year,this.state.month,true);
     }
 
     refreshDay = (month) =>{
         this.state.month = month;
-        this.state.isBack = month.isBack;
         this.state.daysArr = [];
-        this.loadMonthData(this.state.month.year,this.state.month.month,true);
+        this.loadMonthData(this.state.year,this.state.month,true);
     };
 
     render(){
         return(
-            <View style = {{flexDirection:'row',flexWrap:'wrap',width:this.props.width,height:this.props.height}}>
+            <View style = {[{flexDirection:'row',flexWrap:'wrap',width:this.props.width,height:this.props.height},this.props.style]}>
                 {
                     this.state.daysArr.map((item,index) =>{
                         return(
                             <Day day = {item}
                                  ke={ {index}}
                                  style = {{width:this.props.width/7,
-                                     height:this.props.height/7}}
+                                           height:this.props.height/7}}
                                  selectDayBack = {(day) =>{
                                      if (this.props.selectDaysBack) {
                                          this.props.selectDaysBack({year:day.year,
@@ -181,19 +185,34 @@ export default class Month extends Component{
 
 
     getDayWith = (year,month,i) => {
-        let monthData = this.state.month;
-        let lunar = this.setRelatedValue(year,month - 1,i);
+        let monthData = this.props;
+        let lunar = ['','',''];
+        if (monthData.isShowLunar){
+            lunar = this.setRelatedValue(year,month - 1,i);
+        }
         let isMark = -1;
         let isSelected = -1;
-        if (month === monthData.month) {
+        if (month === monthData.month && monthData.marks && monthData.selectDays) {
             isMark = monthData.marks.findIndex(value => value === i);
             isSelected = monthData.selectDays.findIndex(value => value === i);
         }
         let day = {};
+        if (monthData.lunarFontSize){
+            day.lunarFontSize = monthData.lunarFontSize;
+        }
+        if (monthData.fontSize){
+            day.fontSize = monthData.fontSize;
+        }
+        if (monthData.textBold){
+            day.textBold = monthData.textBold;
+        }
+        day.isSelect = monthData.isSelect;
+        day.isShowLine = monthData.isShowLine;
         day.lunarMonth = lunar[1];
         day.lunarDay = lunar[2];
         day.lunarYear = lunar[0];
         day.month = month;
+        day.isShowLunar = monthData.isShowLunar;
         day.year = monthData.year;
         day.systemMonth = this.state.systemMonth;
         day.day = i;
@@ -220,7 +239,7 @@ export default class Month extends Component{
      * @param isSearch  是否向上下查找
      */
     loadMonthData = (year,month,isSearch) =>{
-
+debugger;
         this.state.selectArray = [];
 
         let downSearchArr = [];
@@ -275,7 +294,7 @@ export default class Month extends Component{
         }
 
         let daysArr = [];
-        let monthData = this.state.month;
+        let monthData = this.props;
 
         let date = new Date();
         this.state.systemMonth = date.getMonth() + 1;
@@ -292,15 +311,15 @@ export default class Month extends Component{
             }else {
                 daysArr.push(day);
             }
-            if (this.props.selectDaysBack &&
-                this.state.month.selectDays.length > 0 &&
+            if (this.props.selectDaysBack && monthData.selectDays &&
+                monthData.selectDays.length > 0 &&
                 this.state.isBack) {
 
                 if (this.state.month.isBack){
-                    if (this.state.month.selectDays.findIndex(index => (i) === index) > -1){
+                    if (monthData.selectDays.findIndex(index => (i) === index) > -1){
                         arr.push({day});
                     }
-                    if (arr.length === this.state.month.selectDays.length){
+                    if (monthData.selectDays && arr.length === monthData.selectDays.length){
                         this.state.isBack = false;
                         this.props.selectDaysBack([{year:day.year,months:[{month:day.month,days:arr}]}]);
                     }

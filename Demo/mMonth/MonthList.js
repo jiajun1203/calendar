@@ -337,9 +337,18 @@ export default class MonthList extends Component{
                             this.rightMonth = ref;
                         }
                     }}
-                            width = {this.props.width}
-                            height = {this.props.height}
-                            month = {item}
+                            year={item.year}
+                            month={item.month}
+                            isSelectMore={item.isSelectMore}
+                            isGray={item.true}
+                            isSelectGray={item.isSelectGray}
+                            isShowNotCurrentMonth = {item.isShowNotCurrentMonth}
+                            markColor={item.markColor}
+                            selectColor = {item.selectColor}
+                            selectShape = {item.selectShape}
+                            selectSpace = {item.selectSpace}
+                            width = {item.width}
+                            height = {item.height}
                             selectDaysBack = {(selectItem) =>{
 
                                 if (selectItem && Array.isArray(selectItem)){

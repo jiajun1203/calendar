@@ -73,6 +73,7 @@ export default class Day extends Component{
     * }
     * */
     render(){
+
         return(
             <View style = {{flex:1}}>
                 <View style={{height:Platform.OS === 'ios' ? 44 : 56,backgroundColor: '#1296db',
@@ -84,9 +85,6 @@ export default class Day extends Component{
                     </Text>
                 </View>
 
-                <ScrollView>
-
-                </ScrollView>
 
             </View>
         )

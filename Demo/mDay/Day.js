@@ -18,10 +18,18 @@ export default class Day extends Component{
         mark:PropTypes.number,          //标记 默认打标记-右上角圆点）
         markColor:PropTypes.string,     //标记颜色
 
+        textBold:PropTypes.string,
+        fontSize:PropTypes.number,
+        lunarFontSize:PropTypes.number,
+
+        isSelect : PropTypes.bool,  //是否可以点击选择
+
         selectColor:PropTypes.string,   //选中颜色
         selectShape:PropTypes.string,   //  圆：round  正方形：square，
         selectSpace:PropTypes.number,   //选中背景距离边格的距离，默认0，
         selectDayWithMonth:PropTypes.object,   //selectDayBack 返回的day模型
+
+        isShowLine : PropTypes.bool,    //是否展示底部线条
 
         selectDayBack : PropTypes.func,     //选择天返回
         getDay:PropTypes.func,         //获取当月天
@@ -31,7 +39,10 @@ export default class Day extends Component{
         describe : '',
 
         mark:0,
-
+        isSelect:true,
+        fontSize:15,
+        lunarFontSize:9,
+        textBold:'normal',
         isSelectMore : false,
         selectColor : '#1296db',
         selectShape: 'round',
@@ -103,9 +114,12 @@ export default class Day extends Component{
 
 
             <TouchableOpacity style = {[this.props.style,{justifyContent:'center',alignItems:'center',
-                                        borderBottomColor:'#D3D3D3',borderBottomWidth:0.5}]}
+                                        borderBottomColor:'#D3D3D3',borderBottomWidth:day.isShowLine ? 0.5 : 0}]}
                               activeOpacity={1}
                               onPress = {() =>{
+                                  if (!day.isSelect){
+                                      return;
+                                  }
                                   if (!day.isSelectGray && day.isGray){
                                       return;
                                   }
@@ -119,12 +133,17 @@ export default class Day extends Component{
                                 backgroundColor:day.isSelected ? day.selectColor : 'transparent',
                                 borderRadius:borderRadius
                 }}>
-                    <Text style = {{fontSize:15,color:defaultColor,textAlign:'center'}}>
-                        {day.day}
+                    <Text style = {{fontSize:day.fontSize,color:defaultColor,textAlign:'center',fontWeight:day.textBold}}>
+                        { day.day}
                     </Text>
-                    <Text style = {{fontSize:9,color:defaultColor,textAlign:'center'}}>
-                        {day.lunarDay === '初一' ? day.lunarMonth : day.lunarDay}
-                    </Text>
+                    {
+                        day.isShowLunar?
+                            <Text style = {{fontSize:day.lunarFontSize,color:defaultColor,textAlign:'center'}}>
+                                {day.lunarDay === '初一' ? day.lunarMonth : day.lunarDay}
+                            </Text>
+                            : null
+                    }
+
                 </View>
                 <View style = {{position: 'absolute',width:5,height:5,borderRadius:2.5,
                                 backgroundColor:day.isMark ? day.markColor : 'transparent',

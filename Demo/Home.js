@@ -3,7 +3,7 @@ import {
     View,Dimensions,Text,
 } from 'react-native'
 import MonthList from "./mMonth/MonthList";
-
+import Year from "./mYear/Year"
 const maxHeight = Dimensions.get('window').height;
 const maxWidth  = Dimensions.get('window').width;
 
@@ -35,33 +35,38 @@ export default class Home extends Component {
     render(){
         return(
             <View style = {{flex:1}}>
-                    <View style = {{marginTop:44,justifyContent:'center',alignItems:'center'}}>
-                        <Text style = {{fontSize:23}}>
-                            {this.state.year + '    ' + this.state.month}
-                        </Text>
-                    </View>
-                <MonthList style = {{marginHorizontal:25,marginTop:64}}
-                           width = {maxWidth - 50}
-                           height = {270}
-                           isSelectMore = {false}
-                           isShowNotCurrentMonth = {true}
-                           isSelectGray = {false}
-                           horizontal = {true}
-                           getShowTime = {(year,month) =>{
-                               this.setState({
-                                   year:year,
-                                   month:month
-                               })
-                           }}
-                            getMarks={(month) =>{
-                                return [3,6,9];
-                            }}
-                            getSelectDays={(month) =>{
-                                return [13,16,19];
-                            }}
-                            selectDaysBack={(days) =>{
-                                // console.log(days);
-                            }}/>
+                    {/*<View style = {{marginTop:44,justifyContent:'center',alignItems:'center'}}>*/}
+                        {/*<Text style = {{fontSize:23}}>*/}
+                            {/*{this.state.year + '    ' + this.state.month}*/}
+                        {/*</Text>*/}
+                    {/*</View>*/}
+
+                <Year style = {{width:maxWidth,height:maxHeight}}
+                      width = {maxWidth}
+                      height = {maxHeight}/>
+
+                {/*<MonthList style = {{marginHorizontal:25,marginTop:64}}*/}
+                           {/*width = {maxWidth - 50}*/}
+                           {/*height = {270}*/}
+                           {/*isSelectMore = {false}*/}
+                           {/*isShowNotCurrentMonth = {true}*/}
+                           {/*isSelectGray = {false}*/}
+                           {/*horizontal = {true}*/}
+                           {/*getShowTime = {(year,month) =>{*/}
+                               {/*this.setState({*/}
+                                   {/*year:year,*/}
+                                   {/*month:month*/}
+                               {/*})*/}
+                           {/*}}*/}
+                            {/*getMarks={(month) =>{*/}
+                                {/*return [3,6,9];*/}
+                            {/*}}*/}
+                            {/*getSelectDays={(month) =>{*/}
+                                {/*return [13,16,19];*/}
+                            {/*}}*/}
+                            {/*selectDaysBack={(days) =>{*/}
+                                {/*// console.log(days);*/}
+                            {/*}}/>*/}
 
                 {/*<Month  style = {{marginHorizontal:25,marginTop:64}}*/}
                         {/*width = {Dimensions.get('window').width - 50}*/}

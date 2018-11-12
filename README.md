@@ -54,7 +54,7 @@
                                 
 
 
- ![image](https://github.com/jiajun1203/calendar/raw/master/assets/image/calGif.mp4)
+ ![image](https://github.com/jiajun1203/calendar/raw/master/assets/image/calGif.gif)
 
  ![Alt text](https://github.com/jiajun1203/calendar/raw/master/assets/image/month.jpg)
 
